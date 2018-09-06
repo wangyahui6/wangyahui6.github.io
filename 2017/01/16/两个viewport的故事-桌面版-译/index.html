@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="4TkXykMbB5" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="css," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="在这个系列文章中，我将说明viewports和重要元素的宽度是如何工作的，比如&amp;lt;html&amp;gt;元素、window和 scrren的宽度。 这篇文章是关于桌面浏览器的，目的是为介绍移动浏览器做好准备。大部分的web开发者已经对桌面浏览器的一些概念很熟悉了。在移动浏览器上我们会发现同样的概念，只不过要更复杂一些，回顾一下这些熟悉的概念将对我们理解移动浏览器有很大的帮助。">
+<meta name="keywords" content="css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="两个viewport的故事-桌面版(译)">
+<meta property="og:url" content="http://yoursite.com/2017/01/16/两个viewport的故事-桌面版-译/index.html">
+<meta property="og:site_name" content="王亚辉的博客">
+<meta property="og:description" content="在这个系列文章中，我将说明viewports和重要元素的宽度是如何工作的，比如&amp;lt;html&amp;gt;元素、window和 scrren的宽度。 这篇文章是关于桌面浏览器的，目的是为介绍移动浏览器做好准备。大部分的web开发者已经对桌面浏览器的一些概念很熟悉了。在移动浏览器上我们会发现同样的概念，只不过要更复杂一些，回顾一下这些熟悉的概念将对我们理解移动浏览器有很大的帮助。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/csspixels_100.gif">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/csspixels_out.gif">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/csspixels_in.gif">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_screen.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_inner.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_inner_zoomed.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_page.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_page_zoomed.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_htmlbehaviour.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_100percent.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_documentwidth.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_client.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_client_smallpage.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_offset.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_offset_smallpage.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_pageXY.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_clientXY.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_screenXY.jpg">
+<meta property="og:image" content="http://www.quirksmode.org/mobile/pix/viewport/desktop_mediaqueries.jpg">
+<meta property="og:updated_time" content="2018-09-04T05:56:36.549Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="两个viewport的故事-桌面版(译)">
+<meta name="twitter:description" content="在这个系列文章中，我将说明viewports和重要元素的宽度是如何工作的，比如&amp;lt;html&amp;gt;元素、window和 scrren的宽度。 这篇文章是关于桌面浏览器的，目的是为介绍移动浏览器做好准备。大部分的web开发者已经对桌面浏览器的一些概念很熟悉了。在移动浏览器上我们会发现同样的概念，只不过要更复杂一些，回顾一下这些熟悉的概念将对我们理解移动浏览器有很大的帮助。">
+<meta name="twitter:image" content="http://www.quirksmode.org/mobile/pix/viewport/csspixels_100.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/01/16/两个viewport的故事-桌面版-译/"/>
+
+
+
+
+
+  <title>两个viewport的故事-桌面版(译) | 王亚辉的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">王亚辉的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/16/两个viewport的故事-桌面版-译/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王亚辉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="王亚辉的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">两个viewport的故事-桌面版(译)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-16T15:56:43+08:00">
+                2017-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web前端/" itemprop="url" rel="index">
+                    <span itemprop="name">web前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在这个系列文章中，我将说明viewports和重要元素的宽度是如何工作的，比如<code>&lt;html&gt;</code>元素、window和 scrren的宽度。</p>
+<p>这篇文章是关于桌面浏览器的，目的是为介绍移动浏览器做好准备。大部分的web开发者已经对桌面浏览器的一些概念很熟悉了。在移动浏览器上我们会发现同样的概念，只不过要更复杂一些，回顾一下这些熟悉的概念将对我们理解移动浏览器有很大的帮助。<br><a id="more"></a></p>
+<h3 id="设备像素和css像素"><a href="#设备像素和css像素" class="headerlink" title="设备像素和css像素"></a>设备像素和css像素</h3><p>你需要理解的第一个概念是css像素和设备像素之间的区别。</p>
+<p>设备像素，顾名思义，无论你用什么设备，设备像素都是表示设备的实际分辨率。设备像素可以从<code>screen.width/height</code>读取。</p>
+<p>如果你给一个元素<code>widht:128px</code>,你的显示器是1024px宽，你最大化你的浏览器，这个元素可以在屏幕上平铺8个。(大概；忽略一些不确定因素)</p>
+<p>如果用户缩放了页面，这个值将发生改变。如果用户放大浏览器到200%，你的128px的元素只能在屏幕上平铺4个了。</p>
+<p>用户缩放在浏览器中是通过拉伸像素实现的。也就是说，元素的宽度并没有从128px变成256px，而是像素的尺寸变成了原来的两倍。综上，这个元素仍旧有128px的css像素,但是此时它却占有256px的设备像素。</p>
+<p>换句话说，放到到200%使一个css像素尺寸了变成了4倍的设备像素的尺寸。(两倍的宽，两倍的高)。</p>
+<p>下面几个图片可以很清楚的说明这个概念。第一个是缩放为100%，这个没什么可看的。css像素完全覆盖了设备像素。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/csspixels_100.gif" alt="image"></p>
+<p>现在我们缩小页面。css像素开始缩小，意味着一个设备像素可以覆盖若干个css像素。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/csspixels_out.gif" alt="image"></p>
+<p>如果你放大，相反的事情就发生了。css像素开始变大，现在一个css像素可以覆盖若干个设备像素</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/csspixels_in.gif" alt="image"></p>
+<p>关键点在于你只需要关系css像素，它决定你的样式如何渲染。</p>
+<p>设备像素对于你来说几乎是无用的。对用户来说不是，用户会缩放页面直到页面看起来舒服位置。但是这个缩放比对你来说不重要，浏览器会自动根据缩放比来缩小或者放大的你的css像素。</p>
+<h3 id="100-zoom"><a href="#100-zoom" class="headerlink" title="100% zoom"></a>100% zoom</h3><p>我上面提到的例子，前提是100%的缩放。现在可以更严格的定义一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在100%缩放的情况下，css像素和设备像素是严格相等的。</span><br></pre></td></tr></table></figure></p>
+<p>这100%缩放的概念在我们的这个解释中是非常有用的，但是我们在日常开发中不需要过度担心这个。在桌面浏览器开发中通常你都是在100%缩放的情况下，即使用户缩放页面，css像素的原理也能保证你的布局保持比例，不能打乱。</p>
+<h3 id="Screen-Size"><a href="#Screen-Size" class="headerlink" title="Screen Size"></a>Screen Size</h3><p>让我们来看一下实际的尺寸吧。我们从<code>screen.width</code>和<code>screen.height</code>开始。他们表示用户屏幕的总宽度和总高度。他们的单位是设备像素，因为它们从来不会改变：它们是显示器的特性，不是浏览器的特性。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_screen.jpg" alt="image"></p>
+<p>很有意思！但是我们能用这个信息做什么那？</p>
+<p>基本没有用。用户的显示器尺寸对我们来说不重要，除非你想做一个web资料数据库。</p>
+<h3 id="Window-Size"><a href="#Window-Size" class="headerlink" title="Window Size"></a>Window Size</h3><p>相反，你关心的是浏览器窗口的内部尺寸是什么。那会告诉你用于展示你的css布局的空间是多大。你可以通过<code>window.innerWidth</code>和<code>window.innerHeight</code>来获取。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_inner.jpg" alt="image"></p>
+<p>很明显，窗口的内部宽度的单位是css像素。你需要知道的是你的css布局有多少可以呈现在浏览器窗口中，而且这个呈现的数量会随着用户放大页面而减少(css像素越大，所呈现的内容越少)。因此如果用户放大页面，你可用的空间也就越少，在<code>window.innerWidth/Height</code>反应为值减小。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_inner_zoomed.jpg" alt="image"></p>
+<p>注意！这个宽度和高度包括滚动条。滚动条也被认为是浏览器窗口的一部分。(这个有历史的原因)</p>
+<h3 id="Scrolling-offset"><a href="#Scrolling-offset" class="headerlink" title="Scrolling offset"></a>Scrolling offset</h3><p><code>window.pageXOffset</code>和<code>window.pageYOffset</code>,表示document横向和纵向的滚动偏移。通过这两个属性，你可以知道用户滚动的位置。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_page.jpg" alt="image"></p>
+<p>这两个属性的单位也是css像素。理论上，如果用户向上滚动然后放大，<code>window.pageX/YOffset</code>应该发生改变。但是浏览器做了一些处理，在用户缩放的时候，浏览器试图使同一个元素保持在浏览器窗口的顶部来使页面看起来不会跳动。这意味着<code>window.pageX/YOffset</code>在用户缩放的时候不会改变：被滚动出屏幕的css像素数不会改变。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_page_zoomed.jpg" alt=""></p>
+<h3 id="概念-the-viewport"><a href="#概念-the-viewport" class="headerlink" title="概念:the viewport"></a>概念:the viewport</h3><p>在我们继续介绍更多的js属性之前，我们必须介绍另外一个概念：viewport。</p>
+<p>viewport的作用是限制<code>&lt;html&gt;</code>元素，是网站的最顶级的块级元素。</p>
+<p>这听起来或许有一点模糊，我们来举一个实际的例子。假设你有一个流体布局，你的侧边栏是<code>width:10%</code>.当你调整浏览器的大小时，侧边栏随着增大或减小。那它到底是怎么工作的那？</p>
+<p>从技术上说，侧边栏在获取它父元素的宽度的10%的时候发生了什么。我们假定<code>&lt;body&gt;</code>元素为父元素。所以现在问题变成了<code>&lt;body&gt;</code>元素（你没有给<code>&lt;body&gt;</code>赋宽度）的宽度是多少。</p>
+<p>通常来说，所有的块级元素的宽度都是父元素的宽度的100%。因此<code>&lt;body&gt;</code>元素是和它的父元素<code>&lt;html&gt;</code>一样宽的。</p>
+<p>现在<code>&lt;html&gt;</code>元素的宽度是多少那？为什么它和浏览器一样宽。这也是为什么你的<code>width:10%</code>的侧边栏占整个浏览器宽度的10%的原因。所有的web开发者都知道这个事实。</p>
+<p>你或许不知道这其中的工作原理。理论上，html元素的宽度是被viewport的宽度限制的。html元素等于viewport的宽度。</p>
+<p>viewport和浏览器窗口相等的：它就是这么被定义的。viewport不是一个HTML结构，所以你不能靠css影响它。它就是有浏览器窗口的宽度和高度(桌面);在移动浏览器上它是比较复杂的。</p>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>这些东西有时候会有一些奇怪的结果。你能这个网站(<a href="http://www.quirksmode.org/mobile/viewports.html)中看到其中一个。滚动到最顶部，然后放大页面2到3倍，使页面内容溢出浏览器窗口。" target="_blank" rel="noopener">http://www.quirksmode.org/mobile/viewports.html)中看到其中一个。滚动到最顶部，然后放大页面2到3倍，使页面内容溢出浏览器窗口。</a></p>
+<p>现在滚动到最右边，你将会看到顶部的蓝色栏不再被正确的排列。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_htmlbehaviour.jpg" alt="image"></p>
+<p>这个行为是viewport被定义的方式导致的。我给了蓝色顶部栏一个<code>width:100%</code>.什么的100%？html元素的100%。<code>&lt;html&gt;</code>元素和viewport是等宽的，所以和浏览器窗口也是等宽的。</p>
+<p>重点是：在100%缩放时，它是正常的，现在我们放大页面，导致viewport变的比我们页面的总宽度小。对于它自己来说这不重要，页面的内容溢出了html元素，但是html元素是<code>[overflow](http://www.quirksmode.org/css/overflow.html): visible</code>，这就意味着超出的元素会被显示。</p>
+<p>但是蓝色顶部栏没有溢出。我给了它width:100%,浏览器会给它一个viewport的宽度。他们不关心现在的宽度太小了。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_100percent.jpg" alt="image"></p>
+<h3 id="document-width"><a href="#document-width" class="headerlink" title="document width?"></a>document width?</h3><p>我真正想知道的是页面内容的总宽度是多少，包括突出的部分。据我所知，浏览器并未提供这个值。</p>
+<p>我开始相信我们需要一个js属性对来表示我称作”document width”的值。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_documentwidth.jpg" alt="image"></p>
+<p>如果我们真是觉得这样不爽，为什么不把document width的值暴露给css那？我希望蓝色顶部栏继承document宽度，而不是html元素的宽度。（这个确实有些棘手，如果不可能实现我也不会觉得惊讶）</p>
+<p>浏览器厂商，你们怎么认为那？</p>
+<h3 id="viewport尺寸"><a href="#viewport尺寸" class="headerlink" title="viewport尺寸"></a>viewport尺寸</h3><p>你或许想要知道viewport的尺寸。他们可以通过<code>document.documentElement.clientWidth/clientHeight</code>来获取.</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_client.jpg" alt="image"></p>
+<p>如果你了解dom结构，你就知道<code>document.documentElement</code>其实是<code>&lt;html&gt;</code>元素：<code>&lt;html&gt;</code>文档的根元素。然而，viewport是更高一级的，可以说它是包含<code>&lt;html&gt;</code>元素的元素。如果你给了<code>&lt;html&gt;</code>元素一个宽度，那就变得比较重要了(不推荐这样做，但是这是可以的)。即使在这种情况下，<code>document.documentElement.clientWidth/clientHeight</code>仍旧给出的是viewport的尺寸，而不是html的尺寸。(这是一个只对这个元素和这个属性对起作用的特例。其他情况下<code>clientWidth/clientHeight</code>都是取元素的真实尺寸)。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_client_smallpage.jpg" alt="image"></p>
+<p>因此<code>document.documentElement.clientWidth/clientHeight</code>总是给出viewport的尺寸，无视html的尺寸。</p>
+<h3 id="两对属性值"><a href="#两对属性值" class="headerlink" title="两对属性值"></a>两对属性值</h3><p>那么viewport的尺寸是不是也可以由<code>window.innerWidth/Height</code>给出。答案是也不是。</p>
+<p>这两对属性值的唯一区别在于，<code>window.innerWidth/Height</code>包括滚动条的宽度，<code>document.documentElement.clientWidth/clientHeight</code>不包括。</p>
+<p>我们之所以有两对属性是浏览器大战的产物。当时Netscape只支持<code>window.innerWidth/Height</code>，而IE只支持<code>document.documentElement.clientWidth/clientHeight</code>。当所有其他浏览器开始支持<code>document.documentElement.clientWidth/clientHeight</code>的时候，IE仍旧不支持<code>window.innerWidth/Height</code>.在桌面浏览器上有两个属性对是一个烦人的事情，但是在移动浏览器上它是一个福音。</p>
+<h3 id="html元素的尺寸"><a href="#html元素的尺寸" class="headerlink" title="html元素的尺寸"></a>html元素的尺寸</h3><p><code>document.documentElement.clientWidth/clientHeight</code>在所有的情况下都给出的是viewport的尺寸。那么我们从哪里获取html元素自身的宽和高那？他们被存在<code>document.documentElement.offsetWidth/offsetHeight</code>里。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_offset.jpg" alt="image"></p>
+<p>这两个属性真地给了你一个访问<code>&lt;html&gt;</code>元素作为块级元素的接口。如果你设置<code>width</code>或者<code>offsetWidth</code>将会影响这两个属性。</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_offset_smallpage.jpg" alt="image"></p>
+<h3 id="事件坐标"><a href="#事件坐标" class="headerlink" title="事件坐标"></a>事件坐标</h3><p>有一些事件坐标值。当一个鼠标事件发生时，不少于5对属性值会被暴露出来给你事件发生的具体位置信息。其中3对是对我们的讨论来说重要的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. pageX/Y给出相对于html元素的坐标，单位是css像素</span><br><span class="line">2. clientX/Y给出相对于viewport的坐标，单位是css像素</span><br><span class="line">3. screenX/Y给出相对于屏幕的坐标，单位是设备像素</span><br></pre></td></tr></table></figure></p>
+<p>pageX/Y</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_pageXY.jpg" alt="image"></p>
+<p>clientX/Y</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_clientXY.jpg" alt="image"></p>
+<p>screenX/Y</p>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_screenXY.jpg" alt="image"></p>
+<p>你90%的情况下都会使用<code>pageX/Y</code>;通常你想要知道相对于document的位置。其他的10%你想要用<code>clientX/Y</code>.你基本不需要知道相对于屏幕的尺寸。</p>
+<h3 id="媒体查询"><a href="#媒体查询" class="headerlink" title="媒体查询"></a>媒体查询</h3><p>最后，说一些媒体查询。这个思想很简单：你可以指定在页面在不同条件下运行不同的css，比如页面宽度大于、等于、小于某个尺寸的时候。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">div.sidebar&#123;</span><br><span class="line">    width:30%;</span><br><span class="line">&#125;</span><br><span class="line">@media all and (max-width:400px) &#123;</span><br><span class="line">    //styles assigned when width is smaller than 400px;</span><br><span class="line">    div.sidebar &#123;</span><br><span class="line">        width: 100px;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在这个sidebar在宽度大于400px的时候宽300px,小于等于400px的时候宽100px;</p>
+<p>问题是哪个宽度和400px比较？</p>
+<p>有两个相关的媒体查询：<code>width/height</code> 和 <code>device-width/device-height</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. `width/height`用的是`documentElement.clientWidth/height`（就是viewport）。单位是css像素。</span><br><span class="line">2. `device-width/device-height`用的是`screen.width/height`.单位是设备像素。</span><br></pre></td></tr></table></figure>
+<p><img src="http://www.quirksmode.org/mobile/pix/viewport/desktop_mediaqueries.jpg" alt="image"></p>
+<p>应该用哪个宽度？想都不用想，当然是<code>width</code>。web开发者对设备宽度不感兴趣，只是对浏览器窗口的宽度感兴趣。</p>
+<p>在桌面浏览器上使用<code>width</code>，忘记<code>device-width</code>.正如我们所看到的，这在移动设备上是更复杂的。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这篇文章总结了我们对桌面浏览器的探索。第二篇文章将介绍这些概念在移动浏览器的应用，并重点说明和桌面浏览器的不同。</p>
+<p>原文出处：<a href="http://www.quirksmode.org/mobile/viewports.html" target="_blank" rel="noopener">http://www.quirksmode.org/mobile/viewports.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/css/" rel="tag"># css</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/11/前端像素解密/" rel="next" title="前端像素解密">
+                <i class="fa fa-chevron-left"></i> 前端像素解密
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/10/浏览器缓存和webpack缓存配置/" rel="prev" title="浏览器缓存和webpack缓存配置">
+                浏览器缓存和webpack缓存配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/avatar.jpg"
+              alt="王亚辉" />
+          
+            <p class="site-author-name" itemprop="name">王亚辉</p>
+            <p class="site-description motion-element" itemprop="description">我的技术小窝</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#设备像素和css像素"><span class="nav-number">1.</span> <span class="nav-text">设备像素和css像素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#100-zoom"><span class="nav-number">2.</span> <span class="nav-text">100% zoom</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Screen-Size"><span class="nav-number">3.</span> <span class="nav-text">Screen Size</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Window-Size"><span class="nav-number">4.</span> <span class="nav-text">Window Size</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scrolling-offset"><span class="nav-number">5.</span> <span class="nav-text">Scrolling offset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#概念-the-viewport"><span class="nav-number">6.</span> <span class="nav-text">概念:the viewport</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果"><span class="nav-number">7.</span> <span class="nav-text">结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-width"><span class="nav-number">8.</span> <span class="nav-text">document width?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#viewport尺寸"><span class="nav-number">9.</span> <span class="nav-text">viewport尺寸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两对属性值"><span class="nav-number">10.</span> <span class="nav-text">两对属性值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#html元素的尺寸"><span class="nav-number">11.</span> <span class="nav-text">html元素的尺寸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件坐标"><span class="nav-number">12.</span> <span class="nav-text">事件坐标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#媒体查询"><span class="nav-number">13.</span> <span class="nav-text">媒体查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">14.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王亚辉</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
