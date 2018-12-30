@@ -85,7 +85,7 @@
 <meta property="og:image" content="http://yoursite.com/images/css_layout/normal_height.png">
 <meta property="og:image" content="http://yoursite.com/images/css_layout/abnormal_height.png">
 <meta property="og:image" content="http://yoursite.com/images/css_layout/base_height.png">
-<meta property="og:updated_time" content="2018-09-04T05:56:36.547Z">
+<meta property="og:updated_time" content="2018-12-30T09:31:41.982Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="css布局基础总结">
 <meta name="twitter:description" content="前端css布局知识繁杂，实现方式多种多样。想写出高效、合理的布局，必须以深厚的css基础为前提。为了方便记忆和复习，将css布局要点记录如下。内容较多，应用方面说的不太详细，但都是很实用的点。">
@@ -358,7 +358,7 @@
 <h4 id="BFC"><a href="#BFC" class="headerlink" title="BFC"></a>BFC</h4><p>BFC全称是Block Formatting Context,块级格式化上下文。在BFC环境中的元素按照如下规则渲染：</p>
 <ul>
 <li>和文档流一样，元素按照自己<code>类型</code>的布局特性从左到右，从上往下依次排列。</li>
-<li>BFC是一个独立、封闭的渲染区域。子元素的样式对BFC外部产生影响。</li>
+<li>BFC是一个独立、封闭的渲染区域。子元素的样式不对BFC外部产生影响。</li>
 <li>BFC可以识别浮动子元素。</li>
 <li>BFC可以识别浮动的同级元素。利用这一点可以制作弹性布局。</li>
 </ul>
@@ -429,7 +429,7 @@
 <li>影响外部尺寸</li>
 </ul>
 <h6 id="影响元素内部尺寸"><a href="#影响元素内部尺寸" class="headerlink" title="影响元素内部尺寸"></a>影响元素内部尺寸</h6><p>块级元素这种宽度方向自动充满空间的布局特性，当没有设置宽度，设置margin-left和margin-right为对元素的内部空间有影响。margin为正值时，<code>元素尺寸</code>缩小；margin为负值时，<code>元素尺寸</code>增大。因为元素的外部尺寸大小已经定了，就是其包含块的尺寸，而<code>外部尺寸</code>等于<code>元素尺寸</code>加上margin，如果margin为负，<code>元素尺寸</code>自然就增大了。利用内部尺寸增大、外部尺寸不变这个特点，我们可以进行等间隔列表的布局。比如我们实现一个一行三列，两侧无间隙，中间间隙为20px的布局：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.father</span>&#123;</span><br><span class="line">    <span class="attribute">margin-right</span>: -<span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.son</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="built_in">calc</span>( calc(100% - 20px * 3) / <span class="number">3</span>);</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h6 id="影响元素外部尺寸"><a href="#影响元素外部尺寸" class="headerlink" title="影响元素外部尺寸"></a>影响元素外部尺寸</h6><p>在元素宽高固定的时候，相当于<code>元素尺寸</code>固定了，margin开始影响元素的<code>外部尺寸</code>。正margin会使元素元素的<code>外部尺寸</code>增大，负margin会使元素元素的<code>外部尺寸</code>缩小。正值很好理解，就不说了。主要说一下负值，这时候margin-top、margin-left和margin-right、margin-bottom的表现看起来是有区别的，实质是一样。margin-top、margin-left为负值时，表现为元素向上或者向左移动，margin-right、margin-bottom为负值时，表现为其右侧元素或者下面元素都会相应地向左或者向上移动。仔细想想，这都是元素<code>外部尺寸</code>缩小的表现。margin-top、margin-left使左侧上上侧尺寸缩小，就会自然向左或者向上移动。margin-right、margin-bottom使右侧和下侧尺寸缩小，旁边和下面的元素自然就会往左或者往上占位。</p>
+<h6 id="影响元素外部尺寸"><a href="#影响元素外部尺寸" class="headerlink" title="影响元素外部尺寸"></a>影响元素外部尺寸</h6><p>在元素宽高固定的时候，相当于<code>元素尺寸</code>固定了，margin开始影响元素的<code>外部尺寸</code>。正margin会使元素元素的<code>外部尺寸</code>增大，负margin会使元素元素的<code>外部尺寸</code>缩小。正值很好理解，就不说了。主要说一下负值，这时候margin-top、margin-left和margin-right、margin-bottom的表现看起来是有区别的，实质是一样。margin-top、margin-left为负值时，表现为元素向上或者向左移动，margin-right、margin-bottom为负值时，表现为其右侧元素或者下面元素都会相应地向左或者向上移动。仔细想想，这都是元素<code>外部尺寸</code>缩小的表现。margin-top、margin-left使左侧和上侧尺寸缩小，就会自然向左或者向上移动。margin-right、margin-bottom使右侧和下侧尺寸缩小，旁边和下面的元素自然就会往左或者往上占位。</p>
 <h5 id="margin合并"><a href="#margin合并" class="headerlink" title="margin合并"></a>margin合并</h5><p>块级元素的上边距和下边距在某些场景下会发生合并行为。需要注意的是浮动元素和绝对定位元素不会发生合并，且合并只发生在垂直方向。有以下3中合并场景</p>
 <ul>
 <li>相邻兄弟元素</li>
@@ -440,7 +440,7 @@
 <ul>
 <li>正正取大</li>
 <li>正负相加</li>
-<li>负父取小(-20px, -50px合并取-50px)</li>
+<li>负负取小(-20px, -50px合并取-50px)</li>
 </ul>
 <p>阻止margin合并的方法</p>
 <ul>
@@ -465,9 +465,9 @@
 </ul>
 <h5 id="基线"><a href="#基线" class="headerlink" title="基线"></a>基线</h5><p>先来看一张图：</p>
 <p><img src="/images/css_layout/baseline.png" alt="基线"></p>
-<p>vertical-align默认是基线对齐的，基线的位置很重要。而基线的定义是：<code>字母x的下边缘</code>。中线的位置是基线往上 1/2 x-height 高度，就是x交叉的地方。这里有一个需要注意的地方是，纯文字的中线是x交叉的地方，但是内联元素的中线却是内联元素的正中间位置。我们来看一个例子：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span>&#123;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">background</span>: yellow;</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="selector-tag">div</span>&gt;</span><br><span class="line">  &lt;span class="world"&gt;xhello&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>vertical-align默认是基线对齐的，基线的位置很重要。而基线的定义是：<code>字母x的下边缘</code>。中线的位置是基线往上 1/2 x-height 高度，就是x交叉的地方。这里有一个需要注意的地方是，纯文字的中线是x交叉的地方，但是内联元素的中线却是内联元素的正中间位置。x交叉的地方通常要往下偏一点，偏多少和字体、字体大小有关系。我们来看一个例子：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span>&#123;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">background</span>: yellow;</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="selector-tag">div</span>&gt;</span><br><span class="line">  &lt;span class="world"&gt;xhello&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
 <p>效果如下：<br><img src="/images/css_layout/normal_height.png" alt="正常高度"></p>
-<p>一切正常，div高度100px，文字也是近似垂直居中。但是如果我们在.world元素上加<code>vertical-align: middle</code>，我们会发现文字向下偏移，且div高度变成了102px，效果如下：<br><img src="/images/css_layout/abnormal_height.png" alt="不正常高度"></p>
+<p>一切正常，div高度100px，文字也是近似垂直居中。如果我们在.world元素上加<code>vertical-align: middle</code>，我们会发现文字向下偏移，且div高度变成了102px，效果如下：<br><img src="/images/css_layout/abnormal_height.png" alt="不正常高度"></p>
 <p>这是怎么回事那，vertical-align设置的到底跟谁对齐？答案是幽灵空白节点，幽灵空白节点是个很神奇的存在，看不见，但却实实在在地在起作用，它的作用就相当于一个x字符的作用，用来提供对齐基准。我们上面说到的，div元素中有一个图片的例子，img是可替换内联元素，它的baseline就是它的底部，默认是baseline对齐，所以图片对齐的是幽灵空白节点x的基线，x基线位置往下是一段空白的，这就是这段空白的来源。为了更直观，我们在上面这个例子的span元素前面加一个x字符，当做幽灵空白节点，看一下效果：<br><img src="/images/css_layout/base_height.png" alt="不正常高度"></p>
 <p>本来，<code>x</code>和<code>xhello</code>中的<code>x</code>是对齐的。设置vertical-align之后，我们可以看到xhello字符向下挪了一段位置，这是因为span元素的垂直中线位置，比<code>xhello</code>中<code>x</code>交叉点要高，现在要和前面的<code>x</code>交叉点对齐，就往下移动了。又因为<code>x</code>和<code>xhello</code>的行高都是100px，但是现在因为由于错位，造成整体高度多了2px。</p>
 <h5 id="垂直居中应用"><a href="#垂直居中应用" class="headerlink" title="垂直居中应用"></a>垂直居中应用</h5><p>利用line-height和vertical-align可以设置多种场景下的垂直居中。</p>
@@ -662,7 +662,7 @@
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
