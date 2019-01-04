@@ -83,7 +83,7 @@
 <meta property="og:image" content="http://yoursite.com/images/expires.png">
 <meta property="og:image" content="http://yoursite.com/images/cache_control.png">
 <meta property="og:image" content="http://yoursite.com/images/last_modified.png">
-<meta property="og:updated_time" content="2018-09-04T05:56:36.549Z">
+<meta property="og:updated_time" content="2018-12-30T10:46:46.453Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浏览器缓存和webpack缓存配置">
 <meta name="twitter:description" content="网络请求会耗费大量时间和请求，如果可以重用为改变的网络资源，对于用户来说可以更快更流畅的查看网页，对于服务器来说减少了很多负荷，所以浏览器缓存是前端优化的重要内容。本文介绍了浏览器缓存的机制和缓存在webpack中的应用。">
@@ -334,7 +334,7 @@
 <h3 id="Expires"><a href="#Expires" class="headerlink" title="Expires"></a>Expires</h3><p>Expires是http1.0的响应头，代表的含义是资源本地缓存的过期时间，由服务器设定。服务器返回给浏览器的响应头中如果包含Expires字段，浏览器发送请求时拿当前时间和Expires字段值进行比较，判断资源缓存是否失效。如下图所示：</p>
 <p><img src="/images/expires.png" alt="Expires"></p>
 <p><em>Date</em>代表请求资源的时间，<em>Expires</em>代表资源缓存的过期时间，可以看到服务器设置资源的缓存时间为5分钟。2017-02-10 07:53:19之前，请求这个资源就是命中本地缓存。超过这个时间再去请求则不命中。</p>
-<h3 id="Cache-Control"><a href="#Cache-Control" class="headerlink" title="Cache-Control"></a>Cache-Control</h3><p>Cache-Control是http1.0中新增的字段。由于Expires设置的是资源的具体过期时间，如果服务器时间和客户端时间不一样，就会造成缓存错乱，比如认为调节了客户端的时间，所以设置资源有效期的时长更合理。http1.1添加了Cache-Control的max-age字段。max-age代表的含义是资源有效期的时长，是一个相对时长，单位为s。</p>
+<h3 id="Cache-Control"><a href="#Cache-Control" class="headerlink" title="Cache-Control"></a>Cache-Control</h3><p>Cache-Control是http1.1中新增的字段。由于Expires设置的是资源的具体过期时间，如果服务器时间和客户端时间不一样，就会造成缓存错乱，比如人为调节了客户端的时间，所以设置资源有效期的时长更合理。http1.1添加了Cache-Control的max-age字段。max-age代表的含义是资源有效期的时长，是一个相对时长，单位为s。</p>
 <p><img src="/images/cache_control.png" alt="Expires"></p>
 <p>Cache-Control: max-age = 300设置资源的过期时间为5分钟。浏览器再次发送请求时，会把第一次请求的时间和max-age字段值相加和当前时间比较，以此判断是否命中本地缓存。max-age使用的都是客户端时间，比Expires更可靠。如果max-age和Expires同时出现，max-age的优先级更高。Cache-Control提供了更多的字段来控制缓存：</p>
 <ul>
@@ -485,7 +485,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -565,7 +565,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
